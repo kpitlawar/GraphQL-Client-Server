@@ -8,3 +8,7 @@ On browser open  http://localhost:4000/graphql
 
 How to run client
 
+cd > client
+
+yarn start or
+npm start
