@@ -6,11 +6,12 @@ import { getAuthorQuery, addBookMutation } from '../queries/queries'
 
 function AddBook() {
     const author = useQuery(getAuthorQuery);
-    const [addBook] = useMutation(addBookMutation);
+    
 
     const [name, setName] = useState('');
     const [genre, setGenre] = useState('');
     const [authorId, setAuthorId] = useState('');
+    const [addBook] = useMutation(addBookMutation);
 
     const displayAuthors = () => {
         if (author.loading) {
@@ -26,7 +27,12 @@ function AddBook() {
     }
 
     const submitForm = (e) => {
-        addBook();
+        e.preventDefault();
+        addBook({variables:{
+            name:name,
+            genre:genre,
+            authorId:authorId
+        }});
         console.log(name);
         console.log(genre);
         console.log(authorId);
