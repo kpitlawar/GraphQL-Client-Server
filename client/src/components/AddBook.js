@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { getAuthorQuery, addBookMutation } from '../queries/queries'
+import { getAuthorQuery, addBookMutation, getBooksQuery } from '../queries/queries'
 
 
 
 function AddBook() {
     const author = useQuery(getAuthorQuery);
-    
-
     const [name, setName] = useState('');
     const [genre, setGenre] = useState('');
     const [authorId, setAuthorId] = useState('');
@@ -26,13 +24,22 @@ function AddBook() {
         }
     }
 
+    const isValidate = ()=>{
+        if(name.length>0 && genre.length>0){
+            submitForm();
+        }else{
+            alert('Please enter all fields')
+        }
+    }
+
     const submitForm = (e) => {
         e.preventDefault();
-        addBook({variables:{
+        addBook( {variables:{
             name:name,
             genre:genre,
             authorId:authorId
-        }});
+        }, refetchQueries:[{query: getBooksQuery}]},
+        );
         console.log(name);
         console.log(genre);
         console.log(authorId);
@@ -41,7 +48,7 @@ function AddBook() {
         <form id="add-book" onSubmit={submitForm}>
             <div className="field">
                 <label>Book name:</label>
-                <input type="text" onChange={(e) => { setName(e.target.value) }} />
+                <input required type="text" onChange={(e) => { setName(e.target.value) }} />
             </div>
             <div className="field">
                 <label>Genre:</label>
