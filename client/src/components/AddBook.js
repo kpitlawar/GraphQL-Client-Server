@@ -24,31 +24,26 @@ function AddBook() {
         }
     }
 
-    const isValidate = ()=>{
-        if(name.length>0 && genre.length>0){
-            submitForm();
-        }else{
-            alert('Please enter all fields')
+    const submitForm = (e) => {
+        if (name.length > 0 && genre.length > 0) {
+            e.preventDefault();
+            addBook({
+                variables: {
+                    name: name,
+                    genre: genre,
+                    authorId: authorId
+                }, refetchQueries: [{ query: getBooksQuery }]
+            },
+            );
+        } else {
+            alert('Enter all fields')
         }
     }
-
-    const submitForm = (e) => {
-        e.preventDefault();
-        addBook( {variables:{
-            name:name,
-            genre:genre,
-            authorId:authorId
-        }, refetchQueries:[{query: getBooksQuery}]},
-        );
-        console.log(name);
-        console.log(genre);
-        console.log(authorId);
-    }
     return (
-        <form id="add-book" onSubmit={submitForm}>
+        <form id="add-book">
             <div className="field">
                 <label>Book name:</label>
-                <input required type="text" onChange={(e) => { setName(e.target.value) }} />
+                <input type="text" onChange={(e) => { setName(e.target.value) }} />
             </div>
             <div className="field">
                 <label>Genre:</label>
